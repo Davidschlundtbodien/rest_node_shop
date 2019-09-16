@@ -11,6 +11,7 @@ const Product = require('../models/product.js');
 // INDEX
 router.get('/', (req, res, next) => {
   Product.find()
+    .select("name price _id")
     .exec()
     .then(docs => {
       res.status(200).json(docs);
@@ -34,18 +35,22 @@ router.post('/', (req, res, next) => {
     .save()
     .then(result => {
       console.log(result);
-    })
-    .catch(err => console.log(err));
-  res.status(201).json({
-    message: 'Handling POST requests to /products',
-    createdProduct: product
-  });
+      res.status(201).json({
+        message: 'Handling POST requests to /products',
+        createdProduct: product
+      });
+    })  
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({error: err});
+    });
 });
 
 // SHOW
 router.get('/:productId', (req, res, next) => {
   const id = req.params.productId;
   Product.findById(id)
+    .select("name price _id")
     .exec()
     .then(doc => {
       console.log(doc);
