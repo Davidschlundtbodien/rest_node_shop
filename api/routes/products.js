@@ -20,6 +20,7 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
+// IMAGE UPLOADS
 const upload = multer({
   storage: storage, 
   limits: {
